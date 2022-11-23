@@ -15,16 +15,30 @@ let schema = new mongoose.Schema(
       required: true,
     },
     status: {
-      type: String,
+      type:String,
       enum: [
         "applied", // when a applicant is applied
         "shortlisted", // when a applicant is shortlisted
+        "technical",
+        "managerial",
+        "hr",
         "accepted", // when a applicant is accepted
         "rejected", // when a applicant is rejected
         "deleted", // when any job is deleted
         "cancelled", // an application is cancelled by its author or when other application is accepted
         "finished", // when job is over
       ],
+
+      // type: String,
+      // enum: [
+      //   "applied", // when a applicant is applied
+      //   "shortlisted", // when a applicant is shortlisted
+      //   "accepted", // when a applicant is accepted
+      //   "rejected", // when a applicant is rejected
+      //   "deleted", // when any job is deleted
+      //   "cancelled", // an application is cancelled by its author or when other application is accepted
+      //   "finished", // when job is over
+      // ],
       default: "applied",
       required: true,
     },

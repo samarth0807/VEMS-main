@@ -20,6 +20,7 @@ import {
 import { useParams } from "react-router-dom";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
+
 import FilterListIcon from "@material-ui/icons/FilterList";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
@@ -27,6 +28,18 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import { SetPopupContext } from "../../App";
 
 import apiList, { server } from "../../lib/apiList";
+import ProgressBar from "./ProgressBar";
+
+
+// const Handleopen = () => {
+//   const [op, setOp] = useState(false);
+
+
+// const HandleClose = () => {
+
+//   setOp(false);
+// };
+// };
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -338,7 +351,7 @@ const FilterPopup = (props) => {
 };
 
 const ApplicationTile = (props) => {
-  const classes = useStyles();
+  const   classes = useStyles();
   const { application, getData } = props;
   const setPopup = useContext(SetPopupContext);
   const [open, setOpen] = useState(false);
@@ -352,6 +365,9 @@ const ApplicationTile = (props) => {
   const colorSet = {
     applied: "#3454D1",
     shortlisted: "#DC851F",
+    hr:"#DC851F",
+    managerial:"#DC851F",
+    technical:"#DC851F",
     accepted: "#09BC8A",
     rejected: "#D1345B",
     deleted: "#B49A67",
@@ -392,9 +408,14 @@ const ApplicationTile = (props) => {
     }
   };
 
-  const updateStatus = (status) => {
+  // const stat ;
+  const  updateStatus = (status) => {
+  //  console.log(application);
+   
     const address = `${apiList.applications}/${application._id}`;
     const statusData = {
+      jobId:application.job._id,
+      applicantId: application.jobApplicant.userId,
       status: status,
       dateOfJoining: new Date().toISOString(),
     };
@@ -405,6 +426,7 @@ const ApplicationTile = (props) => {
         },
       })
       .then((response) => {
+      //  console.log(response.data.state);
         setPopup({
           open: true,
           severity: "success",
@@ -425,6 +447,9 @@ const ApplicationTile = (props) => {
   const buttonSet = {
     applied: (
       <>
+      <Grid item xs>
+        {/* if(showProgress && <ProgressBar/>); */}
+        </Grid>
         <Grid item xs>
           <Button
             className={classes.statusBlock}
@@ -453,18 +478,70 @@ const ApplicationTile = (props) => {
     ),
     shortlisted: (
       <>
+      
         <Grid item xs>
           <Button
             className={classes.statusBlock}
             style={{
-              background: colorSet["accepted"],
+              background: colorSet["shortlisted"],
               color: "#ffffff",
             }}
-            onClick={() => updateStatus("accepted")}
+            onClick={() => setOpen(true)}
           >
-            Accept
+          Progress Monitoring
           </Button>
+          <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+        <Paper
+          style={{
+            padding: "20px",
+            outline: "none",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            minWidth: "30%",
+            alignItems: "center",
+          }}
+        >
+          <div>
+    
+      <ProgressBar jobId={application.job._id} applicantId={application.jobApplicant.userId} address = {`${apiList.applications}/${application._id}`}/>  
+      {/* /> */}
+    </div>
+        </Paper>
+      </Modal>
         </Grid>
+        <Grid item xs>
+          <Button
+            className={classes.statusBlock}
+            style={{
+              background: colorSet["shortlisted"],
+              color: "#ffffff",
+            }}
+            onClick={() => setOpen(true)}
+          >
+          Progress Monitoring
+          </Button>
+          <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+        <Paper
+          style={{
+            padding: "20px",
+            outline: "none",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            minWidth: "30%",
+            alignItems: "center",
+          }}
+        >
+          <div>
+    
+      <ProgressBar jobId={application.job._id} applicantId={application.jobApplicant.userId} address = {`${apiList.applications}/${application._id}`}/>  
+      
+    </div>
+        </Paper>
+      </Modal>
+        </Grid>
+       
         <Grid item xs>
           <Button
             className={classes.statusBlock}
@@ -564,7 +641,7 @@ const ApplicationTile = (props) => {
               {application.jobApplicant.name}
             </Typography>
           </Grid>
-          <Grid item>
+          {/* <Grid item>
             <Rating
               value={
                 application.jobApplicant.rating !== -1
@@ -573,7 +650,7 @@ const ApplicationTile = (props) => {
               }
               readOnly
             />
-          </Grid>
+          </Grid> */}
           <Grid item>Applied On: {appliedOn.toLocaleDateString()}</Grid>
           <Grid item>
             Education:{" "}
@@ -595,7 +672,7 @@ const ApplicationTile = (props) => {
           </Grid>
         </Grid>
         <Grid item container direction="column" xs={3}>
-          <Grid item>
+          {/* <Grid item>
             <Button
               variant="contained"
               className={classes.statusBlock}
@@ -604,13 +681,13 @@ const ApplicationTile = (props) => {
             >
               Download Resume
             </Button>
-          </Grid>
+          </Grid> */}
           <Grid item container xs>
             {buttonSet[application.status]}
           </Grid>
         </Grid>
       </Grid>
-      <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+      {/* <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
         <Paper
           style={{
             padding: "20px",
@@ -622,16 +699,16 @@ const ApplicationTile = (props) => {
             alignItems: "center",
           }}
         >
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             style={{ padding: "10px 50px" }}
             // onClick={() => changeRating()}
           >
             Submit
-          </Button>
-        </Paper>
-      </Modal>
+          </Button> */}
+        {/* </Paper> */}
+      {/* </Modal> */} 
     </Paper>
   );
 };
@@ -639,6 +716,7 @@ const ApplicationTile = (props) => {
 const JobApplications = (props) => {
   const setPopup = useContext(SetPopupContext);
   const [applications, setApplications] = useState([]);
+  const [showProgress,setShowProgress]=useState(false);
   const { jobId } = useParams();
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchOptions, setSearchOptions] = useState({

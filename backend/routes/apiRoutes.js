@@ -8,10 +8,27 @@ const Recruiter = require("../db/Recruiter");
 const Job = require("../db/Job");
 const Application = require("../db/Application");
 const Rating = require("../db/Rating");
+const { application } = require("express");
+// const { application } = require("express");
 
 const router = express.Router();
-
+// const user=req.user;
+//   const jobId=req.body.jobId;
+//   const applicantId = req.body.applicantId;
+//   if(user.type==='recruiter'){
+//     Application.find({recruiterId:user.id,jobId:jobId,userId:applicantId}, function (err, applicationDetails) {
 // To add new job
+router.put("/progress",jwtAuth,async (req,res)=>{
+  // console.log("hello");
+  // console.log(req);
+  const data=req.body;
+  const user=req.user;
+  const jobId=req.body.jobId;
+  const applicantId = req.body.applicantId;
+  const doc = await Application.findOne({jobId:jobId,recruiterId:user.id,userId:applicantId});
+  doc.status=data.state;
+  await doc.save();
+});
 router.post("/jobs", jwtAuth, (req, res) => {
   const user = req.user;
 
@@ -682,7 +699,23 @@ router.get("/applications", jwtAuth, (req, res) => {
       res.status(400).json(err);
     });
 });
+router.post("/applications/status", jwtAuth,(req, res) => {
+  const user=req.user;
+  const jobId=req.body.jobId;
+  const applicantId = req.body.applicantId;
+  if(user.type==='recruiter'){
+    Application.find({recruiterId:user.id,jobId:jobId,userId:applicantId}, function (err, applicationDetails) {
+    if (err){
+        console.log(err);
+    }
+    else{
+      //console.log(applicationDetails[0].status);
+      res.status(200).json({state:applicationDetails[0].status});
 
+    }
+    });
+  }
+});
 // update status of application: [Applicant: Can cancel, Recruiter: Can do everything] [todo: test: done]
 router.put("/applications/:id", jwtAuth, (req, res) => {
   const user = req.user;

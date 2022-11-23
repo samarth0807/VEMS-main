@@ -195,7 +195,7 @@ const ApplicationTile = (props) => {
           ) : null}
         </Grid>
       </Grid>
-      <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
+      {/* <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
         <Paper
           style={{
             padding: "20px",
@@ -206,15 +206,15 @@ const ApplicationTile = (props) => {
             minWidth: "30%",
             alignItems: "center",
           }}
-        >
+        > */}
           <div>
     
       {/* <Stepper steps={ [{title: 'Application Submitted'}, {title: 'Interview 1'}, {title: 'Interview 2'}, {title: 'Accepted'}] } activeStep={ 1 } /> */}
       {/* <div  onClick={ this.onClickNext }>Next</div> */}
-      <ProgressBar/>
+      {/* <ProgressBar/> */}
     </div>
-        </Paper>
-      </Modal>
+        {/* </Paper>
+      </Modal> */}
     </Paper>
   );
 };

@@ -1,6 +1,7 @@
 const passport = require("passport");
 
 const jwtAuth = (req, res, next) => {
+  // console.log(req);
   passport.authenticate("jwt", { session: false }, function (err, user, info) {
     if (err) {
       return next(err);
