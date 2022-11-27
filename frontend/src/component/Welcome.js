@@ -1,6 +1,8 @@
 import { Grid, Typography } from "@material-ui/core";
 import img from './img.jpg'; // Tell webpack this JS file uses this image
 
+import TestPayment from './recruiter/TestPayment'
+
 const Welcome = (props) => {
   return (
     <Grid container>
@@ -17,6 +19,7 @@ VEMS is surely a ray of hope for all those who want to promote their business in
 
       </div>
     </Grid>
+    {/* <TestPayment/> */}
 </Grid>
   );
 };

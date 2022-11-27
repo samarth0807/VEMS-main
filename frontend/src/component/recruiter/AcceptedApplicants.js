@@ -569,14 +569,14 @@ const ApplicationTile = (props) => {
         </Grid>
         <Grid item container direction="column" xs={3}>
           <Grid item>
-            <Button
+            {/* <Button
               variant="contained"
               className={classes.statusBlock}
               color="primary"
               onClick={() => getResume()}
             >
               Download Resume
-            </Button>
+            </Button> */}
           </Grid>
           <Grid item container xs>
             {/* {buttonSet[application.status]} */}
@@ -595,7 +595,7 @@ const ApplicationTile = (props) => {
             </Button>
           </Grid>
           <Grid item>
-            <Button
+            {/* <Button
               variant="contained"
               color="primary"
               className={classes.statusBlock}
@@ -604,7 +604,7 @@ const ApplicationTile = (props) => {
               }}
             >
               Rate Applicant
-            </Button>
+            </Button> */}
           </Grid>
         </Grid>
       </Grid>

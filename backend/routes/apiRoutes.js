@@ -80,7 +80,7 @@ router.get("/jobs", jwtAuth, (req, res) => {
   if (user.type === "recruiter" && req.query.myjobs) {
     findParams = {
       ...findParams,
-      userId: user._id,
+      userId: user._id, 
     };
   }
 

@@ -21,6 +21,8 @@ import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
 import Stepper from 'react-stepper-horizontal';
 import { SetPopupContext } from "../App";
+import TestPayment from './recruiter/TestPayment'
+
 
 import apiList from "../lib/apiList";
 import ProgressBar from "./recruiter/ProgressBar";
@@ -61,6 +63,55 @@ const ApplicationTile = (props) => {
   const appliedOn = new Date(application.dateOfApplication);
   const joinedOn = new Date(application.dateOfJoining);
 
+  const [book, setBook] = useState({
+  name: "Training Module",
+  author: "Samarth Datir",
+  img: "",
+  price: 5000,
+});
+
+const initPayment = (data) => {
+  const script = document.createElement('script');
+  script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+  document.body.appendChild(script);
+  // script.onload = display;
+  console.log("initPayment")
+  const options = {
+      key: "rzp_test_ajith05f4vTdiL",
+      amount: data.amount,
+      currency: data.currency,
+      name: book.name,
+      description: "Test Transaction",
+      image: book.img,
+      order_id: data.id,
+      handler: async (response) => {
+          try {
+              const verifyUrl = "http://localhost:4444/payment/verify";
+              const { data } = await axios.post(verifyUrl, response);
+              console.log(data);
+          } catch (error) {
+              console.log(error);
+          }
+      },
+      theme: {
+          color: "#3399cc",
+      },
+  };
+  const razor = new window.Razorpay(options);
+  console.log(" after initPayment")
+  razor.open();
+};
+
+const handlePayment = async () => {
+  try {
+    const orderUrl = "http://localhost:4444/payment/orders";
+    const { data } = await axios.post(orderUrl, { amount: book.price });
+    console.log(data);
+    initPayment(data.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
   // const fetchRating = () => {
   //   axios
   //     .get(`${apiList.rating}?id=${application.job._id}`, {
@@ -116,6 +167,8 @@ const ApplicationTile = (props) => {
   //       setOpen(false);
   //     });
   // };
+
+
 
   const handleClose = () => {
     setOpen(false);
@@ -180,17 +233,15 @@ const ApplicationTile = (props) => {
           {application.status === "accepted" ||
           application.status === "finished" ? (
             <Grid item>
-              {/* <Button
+              <Button
                 variant="contained"
                 color="primary"
                 className={classes.statusBlock}
-                onClick={() => {
-                  fetchRating();
-                  setOpen(true);
-                }}
+                onClick={handlePayment}
               >
-                Rate Job
-              </Button> */}
+                    Payment
+
+              </Button>
             </Grid>
           ) : null}
         </Grid>

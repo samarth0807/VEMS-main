@@ -510,7 +510,7 @@ const ApplicationTile = (props) => {
         </Paper>
       </Modal>
         </Grid>
-        <Grid item xs>
+        {/* <Grid item xs>
           <Button
             className={classes.statusBlock}
             style={{
@@ -540,7 +540,7 @@ const ApplicationTile = (props) => {
     </div>
         </Paper>
       </Modal>
-        </Grid>
+        </Grid> */}
        
         <Grid item xs>
           <Button

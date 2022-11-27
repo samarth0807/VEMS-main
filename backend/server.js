@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const passportConfig = require("./lib/passportConfig");
 const cors = require("cors");
 const fs = require("fs");
+const dotenv = require("dotenv");
+const paymentRoutes = require("./routes/payment");
 
 // MongoDB
 mongoose
@@ -28,6 +30,8 @@ if (!fs.existsSync("./public/profile")) {
 }
 
 const app = express();
+
+dotenv.config();
 const port = 4444;
 
 app.use(bodyParser.json()); // support json encoded bodies
@@ -43,6 +47,7 @@ app.use("/auth", require("./routes/authRoutes"));
 app.use("/api", require("./routes/apiRoutes"));
 app.use("/upload", require("./routes/uploadRoutes"));
 app.use("/host", require("./routes/downloadRoutes"));
+app.use("/payment", require("./routes/payment"));
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}!`);

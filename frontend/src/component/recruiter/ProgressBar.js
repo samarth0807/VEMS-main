@@ -3,7 +3,7 @@ import StepNavigation from "../recruiter/stepNavigation";
 import  '../recruiter/indexs.css';
 import axios from "axios";
 function ProgressBar(props) {
-  const labelArray = ['Applied', 'Interview 1', 'Interview 2', 'Interview 3', 'Accepted']
+  const labelArray = ['Applied', 'Round 1', 'Round 2', 'Round 3', 'Accepted']
   const [currentStep, updateCurrentStep] = useState(1);
 
   function updateStep(currentStep) {
